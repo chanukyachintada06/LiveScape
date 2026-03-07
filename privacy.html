@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy - LiveScape</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* Privacy Policy Specific Layout */
+        html,
+        body {
+            overflow-y: auto !important;
+            height: auto !important;
+        }
+
+        body {
+            background: #0f172a;
+            /* Deep modern dark color matching the theme */
+            color: #f1f5f9;
+            font-family: 'Inter', -apple-system, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .privacy-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px 60px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            color: #e2e8f0;
+        }
+
+        p,
+        li {
+            color: #cbd5e1;
+            font-size: 1.05rem;
+        }
+
+        ul {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            list-style-type: none;
+        }
+
+        li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        li::before {
+            content: '•';
+            color: #38bdf8;
+            position: absolute;
+            left: -15px;
+            font-weight: bold;
+        }
+
+        strong {
+            color: #f8fafc;
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #38bdf8;
+            font-family: 'Courier New', monospace;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f1f5f9;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 30px;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .back-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+    </style>
+</head>
+
+<body class="custom-image-wallpaper">
+
+    <div class="privacy-container">
+        <a href="newtab.html" class="back-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Dashboard
+        </a>
+
+        <h1>LiveScape Privacy Policy</h1>
+
+        <p>LiveScape is a browser extension that customizes the New Tab experience with live wallpapers, widgets, and
+            shortcuts.</p>
+
+        <h2>Data Collection</h2>
+        <p>LiveScape does <strong>not collect or transmit personal user data to external servers</strong>.</p>
+        <p>The extension only stores user preferences locally using the browser's local storage.</p>
+        <p>This includes:</p>
+        <ul>
+            <li>wallpaper selections</li>
+            <li>widget layout positions</li>
+            <li>shortcut links</li>
+            <li>appearance settings</li>
+        </ul>
+        <p>These settings are stored <strong>locally on the user's device</strong> using
+            <code>chrome.storage.local</code>.
+        </p>
+
+        <h2>Location Access</h2>
+        <p>If the Weather Widget is enabled, the extension may request the user's <strong>approximate location</strong>
+            through the browser's geolocation API to display local weather information.</p>
+        <p>Location data is <strong>never stored or transmitted to any server</strong> other than the weather API
+            request required to retrieve weather data.</p>
+
+        <h2>Third-Party Services</h2>
+        <p>LiveScape may interact with the following third-party services:</p>
+        <ul>
+            <li>Open-Meteo Weather API (weather data)</li>
+            <li>Google Favicon Service (website icons)</li>
+        </ul>
+        <p>These services are used solely to display content within the extension.</p>
+
+        <h2>Data Sharing</h2>
+        <p>LiveScape <strong>does not sell, share, or transfer any personal data</strong>.</p>
+
+        <h2>Changes to This Policy</h2>
+        <p>This privacy policy may be updated as the extension evolves.</p>
+
+        <h2>Contact</h2>
+        <p>For questions or concerns regarding this privacy policy, please contact the developer through the project's
+            GitHub repository.</p>
+    </div>
+
+</body>
+
+</html>

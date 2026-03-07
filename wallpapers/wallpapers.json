@@ -1,0 +1,177 @@
+[
+    {
+        "category": "anime",
+        "folder": "ANIME",
+        "name": "Goku Super Saiyan",
+        "file": "Goku super saiyan.jpg",
+        "type": "image"
+    },
+    {
+        "category": "anime",
+        "folder": "ANIME",
+        "name": "Goku",
+        "file": "Goku.jpg",
+        "type": "image"
+    },
+    {
+        "category": "anime",
+        "folder": "ANIME",
+        "name": "Luffy 4K",
+        "file": "Luffy 4k.jpg",
+        "type": "image"
+    },
+    {
+        "category": "anime",
+        "folder": "ANIME",
+        "name": "Luffy",
+        "file": "Luffy.png",
+        "type": "image"
+    },
+    {
+        "category": "anime",
+        "folder": "ANIME",
+        "name": "Tanjiro",
+        "file": "Tanjiro.png",
+        "type": "image"
+    },
+    {
+        "category": "anime",
+        "folder": "ANIME",
+        "name": "Zenitsu",
+        "file": "zenitsu.jpg",
+        "type": "image"
+    },
+    {
+        "category": "anime",
+        "folder": "ANIME",
+        "name": "Zenitsu Alt",
+        "file": "Zenitsu.png",
+        "type": "image"
+    },
+    {
+        "category": "cars",
+        "folder": "Cars",
+        "name": "Ferrari SF",
+        "file": "Ferrari-sf.jpg",
+        "type": "image"
+    },
+    {
+        "category": "cars",
+        "folder": "Cars",
+        "name": "McLaren",
+        "file": "mclaren-.jpeg",
+        "type": "image"
+    },
+    {
+        "category": "cars",
+        "folder": "Cars",
+        "name": "Porsche 911 Turbo Black",
+        "file": "Porsche 911 turbo black.jpg",
+        "type": "image"
+    },
+    {
+        "category": "cars",
+        "folder": "Cars",
+        "name": "Porsche 911 GT3",
+        "file": "Porsche-911-GT3.jpg",
+        "type": "image"
+    },
+    {
+        "category": "cars",
+        "folder": "Cars",
+        "name": "Rolls Royce Phantom",
+        "file": "Rolls Royce Phantom.jpg",
+        "type": "image"
+    },
+    {
+        "category": "cars",
+        "folder": "Cars",
+        "name": "Weissach Package",
+        "file": "Weissach Package.jpg",
+        "type": "image"
+    },
+    {
+        "category": "games",
+        "folder": "Games",
+        "name": "Assassin's Creed",
+        "file": "assassins-creed.jpg",
+        "type": "image"
+    },
+    {
+        "category": "games",
+        "folder": "Games",
+        "name": "Black Myth Wukong",
+        "file": "black myth wukong.jpg",
+        "type": "image"
+    },
+    {
+        "category": "games",
+        "folder": "Games",
+        "name": "Black Myth Wukong Alt",
+        "file": "black myth wukong 1.jpg",
+        "type": "image"
+    },
+    {
+        "category": "games",
+        "folder": "Games",
+        "name": "Naraka Bladepoint",
+        "file": "naraka bladepoint.jpeg",
+        "type": "image"
+    },
+    {
+        "category": "games",
+        "folder": "Games",
+        "name": "Naraka Bladepoint Alt",
+        "file": "naraka-bladepoint 1.jpeg",
+        "type": "image"
+    },
+    {
+        "category": "games",
+        "folder": "Games",
+        "name": "Naraka Bladepoint Dark",
+        "file": "naraka-bladepoint.jpg",
+        "type": "image"
+    },
+    {
+        "category": "marvel",
+        "folder": "marvel",
+        "name": "Deadpool",
+        "file": "deadpool.jpg",
+        "type": "image"
+    },
+    {
+        "category": "marvel",
+        "folder": "marvel",
+        "name": "Spider-Man 4K",
+        "file": "spiderman 4k.jpg",
+        "type": "image"
+    },
+    {
+        "category": "marvel",
+        "folder": "marvel",
+        "name": "Venom 4K",
+        "file": "venom 4k.jpg",
+        "type": "image"
+    },
+    {
+        "category": "marvel",
+        "folder": "marvel",
+        "name": "Venom Dark",
+        "file": "venom black screen.jpg",
+        "type": "image"
+    },
+    {
+        "category": "nature",
+        "folder": "Nature",
+        "name": "Colorful Sky",
+        "file": "colorful sky clouds.png",
+        "type": "image"
+    },
+    {
+        "category": "nature",
+        "folder": "Nature",
+        "name": "Mountain",
+        "file": "Mountain.jpg",
+        "type": "image"
+    }
+]

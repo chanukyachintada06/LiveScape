@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LiveScape – New Tab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Syne:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════
+       WALLPAPER LAYER
+  ══════════════════════════════════════════ -->
+  <div id="wallpaper-layer">
+
+    <!-- Video wallpaper -->
+    <video id="video-wallpaper" class="wallpaper-media hidden" autoplay loop muted playsinline></video>
+
+    <!-- GIF wallpaper -->
+    <img id="gif-wallpaper" class="wallpaper-media hidden" alt="GIF Wallpaper" />
+
+    <!-- Canvas / particles animation -->
+    <canvas id="animation-canvas" class="hidden"></canvas>
+
+    <!-- Overlay tint -->
+    <div id="wallpaper-overlay"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════════════ -->
+  <main id="main-content">
+
+    <!-- ── Edit Layout Toggle Button ── -->
+    <button id="edit-layout-btn" class="glass-btn widget-edit-btn" aria-label="Toggle edit mode"
+      title="Edit Widget Layout">+</button>
+
+    <!-- ── Add Widgets Library Button ── -->
+    <button id="open-widget-library" class="glass-btn" aria-label="Open Widget Library">Add More Widgets</button>
+
+    <!-- ── Clock ── -->
+    <div class="movable-widget" id="clock-widget">
+      <section id="clock-section" aria-label="Digital Clock">
+        <div id="clock-display">
+          <span id="clock-time">00:00:00</span>
+          <span id="clock-ampm">AM</span>
+        </div>
+        <div id="clock-date"></div>
+      </section>
+      <div class="widget-resize-handle"></div>
+    </div>
+
+    <!-- ── Search Bar ── -->
+    <div class="movable-widget" id="search-widget">
+      <section id="search-section" aria-label="Google Search">
+        <form id="search-form" action="https://www.google.com/search" target="_blank" method="get">
+          <div id="search-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input id="search-input" type="text" name="q" placeholder="Search Google or type a URL…" autocomplete="off"
+              spellcheck="false" aria-label="Search Google" />
+            <button type="submit" id="search-btn" aria-label="Submit search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        </form>
+      </section>
+      <div class="widget-resize-handle"></div>
+    </div>
+
+    <!-- ── Quick Access Shortcuts ── -->
+    <div class="movable-widget" id="shortcuts-widget">
+      <section id="shortcuts-section" aria-label="Quick Access">
+        <div id="shortcuts-grid">
+          <!-- Dynamic shortcuts injected here -->
+          <div id="shortcuts-container"></div>
+
+          <!-- Add shortcut button -->
+          <button class="shortcut-item shortcut-add" id="add-shortcut-btn" aria-label="Add shortcut">
+            <div class="shortcut-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+            <span class="shortcut-label">Add</span>
+          </button>
+
+        </div>
+      </section>
+      <div class="widget-resize-handle"></div>
+    </div>
+
+    <!-- ── Dynamic Widget Layer ── -->
+    <div id="widget-layer"></div>
+
+    <!-- ── Custom Transparent Footer ── -->
+    <footer id="custom-main-footer">
+      <!-- Left Section -->
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <div id="footer-theme" class="footer-btn">
+          Theme: <span id="footer-theme-name"></span>
+        </div>
+        <a id="footer-privacy-link" href="privacy.html" class="footer-btn" style="text-decoration: none;">Privacy</a>
+      </div>
+
+      <!-- Center Section -->
+      <a id="footer-center-link" href="https://yourwebsite.com" target="_blank">
+        LiveScape v0.3.6 • Dynamic Wallpapers
+      </a>
+
+      <!-- Right Section (Socials) -->
+      <div id="footer-socials">
+        <!-- Button 1: GitHub -->
+        <a href="https://github.com" target="_blank" class="footer-icon-btn" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+          </svg>
+        </a>
+        <!-- Button 2: Developer 1 -->
+        <a href="#" target="_blank" class="footer-icon-btn" aria-label="Developer 1 Portfolio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10" />
+            <path
+              d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+          </svg>
+        </a>
+        <!-- Button 3: Developer 2 -->
+        <a href="#" target="_blank" class="footer-icon-btn" aria-label="Developer 2 Portfolio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10" />
+            <path
+              d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+          </svg>
+        </a>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════
+       SETTINGS PANEL
+  ══════════════════════════════════════════ -->
+
+  <!-- Settings Toggle Button -->
+  <button id="settings-toggle" aria-label="Open Settings" title="Settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="3" />
+      <path
+        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    </svg>
+  </button>
+
+  <!-- Settings Panel -->
+  <aside id="settings-panel" class="glass-panel" role="dialog" aria-label="Settings" aria-hidden="true">
+
+    <div id="settings-header">
+      <div id="settings-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polygon
+            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+        <span>LiveScape</span>
+      </div>
+      <button id="settings-close" aria-label="Close settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+
+    <div id="settings-body">
+
+      <!-- ── Section: Display Mode ── -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+          </svg>
+          Display Mode
+        </h3>
+
+        <div class="mode-toggle-group">
+          <button class="mode-btn active" id="mode-fullscreen" data-mode="fullscreen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 3 21 3 21 9" />
+              <polyline points="9 21 3 21 3 15" />
+              <line x1="21" y1="3" x2="14" y2="10" />
+              <line x1="3" y1="21" x2="10" y2="14" />
+            </svg>
+            Fullscreen
+          </button>
+          <button class="mode-btn" id="mode-blur" data-mode="blur">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
+            </svg>
+            Glassmorphism
+          </button>
+        </div>
+
+        <button id="reset-layout-btn" class="danger-btn" style="margin-top: 1rem; width: 100%;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+            <path d="M3 3v5h5" />
+          </svg>
+          Reset Widget Layout
+        </button>
+      </div>
+
+      <!-- ── Section: Wallpaper Source ── -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
+          </svg>
+          Wallpaper Source
+        </h3>
+
+        <!-- Wallpaper type selector -->
+        <div class="wallpaper-type-group">
+          <label class="radio-option">
+            <input type="radio" name="wallpaper-type" value="video" id="type-video" />
+            <span class="radio-custom"></span>
+            <span>Video (MP4/WebM)</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="wallpaper-type" value="gif" id="type-gif" />
+            <span class="radio-custom"></span>
+            <span>GIF Animation</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="wallpaper-type" value="animation" id="type-animation" checked />
+            <span class="radio-custom"></span>
+            <span>Interactive Canvas</span>
+          </label>
+        </div>
+
+        <!-- Upload video -->
+        <div class="upload-area" id="upload-video-area">
+          <label for="upload-video" class="upload-label" id="video-upload-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <span>Upload Video</span>
+            <small>MP4 or WebM</small>
+          </label>
+          <input type="file" id="upload-video" accept="video/mp4,video/webm" class="hidden-input" />
+        </div>
+
+        <!-- Upload GIF -->
+        <div class="upload-area hidden" id="upload-gif-area">
+          <label for="upload-gif" class="upload-label" id="gif-upload-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <span>Upload GIF</span>
+            <small>Animated GIF file</small>
+          </label>
+          <input type="file" id="upload-gif" accept="image/gif" class="hidden-input" />
+        </div>
+
+        <!-- Animation options -->
+        <div class="animation-options" id="animation-options-area">
+          <p class="settings-label">Animation Style</p>
+          <div class="anim-style-group">
+            <button class="anim-style-btn active" data-style="particles">
+              <span class="anim-preview particles-preview"></span>
+              Particles
+            </button>
+            <button class="anim-style-btn" data-style="matrix">
+              <span class="anim-preview matrix-preview"></span>
+              Matrix
+            </button>
+            <button class="anim-style-btn" data-style="nebula">
+              <span class="anim-preview nebula-preview"></span>
+              Nebula
+            </button>
+            <button class="anim-style-btn" data-style="aurora">
+              <span class="anim-preview aurora-preview"></span>
+              Aurora
+            </button>
+          </div>
+        </div>
+
+        <!-- Clear wallpaper -->
+        <button id="clear-wallpaper-btn" class="danger-btn hidden">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6" />
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+          </svg>
+          Clear Wallpaper
+        </button>
+      </div>
+
+      <!-- ── Section: Categories ── -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+            <line x1="4" y1="22" x2="4" y2="15" />
+          </svg>
+          Wallpaper Categories
+        </h3>
+        <div class="category-grid">
+          <button class="category-btn" data-category="cyberpunk">
+            <span class="category-icon">🌆</span>
+            <span>Cyberpunk</span>
+          </button>
+          <button class="category-btn" data-category="nature">
+            <span class="category-icon">🌿</span>
+            <span>Nature</span>
+          </button>
+          <button class="category-btn" data-category="space">
+            <span class="category-icon">🌌</span>
+            <span>Space</span>
+          </button>
+          <button class="category-btn" data-category="anime">
+            <span class="category-icon">🎌</span>
+            <span>Anime</span>
+          </button>
+          <button class="category-btn" data-category="cars">
+            <span class="category-icon">🏎️</span>
+            <span>Cars</span>
+          </button>
+          <button class="category-btn" data-category="games">
+            <span class="category-icon">🎮</span>
+            <span>Games</span>
+          </button>
+          <button class="category-btn" data-category="marvel">
+            <span class="category-icon">🦸</span>
+            <span>Marvel</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Section: Performance ── -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+          Performance
+        </h3>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">Pause when inactive</span>
+            <span class="toggle-desc">Stops animation when tab is not visible</span>
+          </div>
+          <label class="toggle-switch" aria-label="Pause animation when tab is inactive">
+            <input type="checkbox" id="toggle-perf" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">Reduce particles</span>
+            <span class="toggle-desc">Lower particle count for better performance</span>
+          </div>
+          <label class="toggle-switch" aria-label="Reduce particle count">
+            <input type="checkbox" id="toggle-reduce-particles" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">Show clock</span>
+            <span class="toggle-desc">Display digital clock on new tab</span>
+          </div>
+          <label class="toggle-switch" aria-label="Show clock">
+            <input type="checkbox" id="toggle-clock" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">24-hour format</span>
+            <span class="toggle-desc">Use 24-hour time display</span>
+          </div>
+          <label class="toggle-switch" aria-label="Use 24-hour clock">
+            <input type="checkbox" id="toggle-24h" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+      </div>
+
+      <!-- ── Section: Widgets ── -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          Widgets
+        </h3>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">Show Analog Clock</span>
+            <span class="toggle-desc">Toggle analog clock widget visibility</span>
+          </div>
+          <label class="toggle-switch" aria-label="Toggle analog clock widget visibility">
+            <input type="checkbox" data-widget="analogClock" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">Show Calendar</span>
+            <span class="toggle-desc">Toggle calendar widget visibility</span>
+          </div>
+          <label class="toggle-switch" aria-label="Toggle calendar widget visibility">
+            <input type="checkbox" data-widget="calendar" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">Show Weather</span>
+            <span class="toggle-desc">Toggle weather widget visibility</span>
+          </div>
+          <label class="toggle-switch" aria-label="Toggle weather widget visibility">
+            <input type="checkbox" data-widget="weather" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">Show Music Widget</span>
+            <span class="toggle-desc">Toggle music widget visibility</span>
+          </div>
+          <label class="toggle-switch" aria-label="Toggle music widget visibility">
+            <input type="checkbox" data-widget="music" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">Show Shortcut Folder</span>
+            <span class="toggle-desc">Toggle shortcut folder visibility</span>
+          </div>
+          <label class="toggle-switch" aria-label="Toggle shortcut folder visibility">
+            <input type="checkbox" data-widget="shortcutFolder" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+      </div>
+
+      <!-- ── Section: Auto Rotate Wallpapers ── -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10" />
+            <polyline points="1 20 1 14 7 14" />
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+          </svg>
+          Auto Rotate
+        </h3>
+
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <span class="toggle-title">Auto Rotate Wallpapers</span>
+            <span class="toggle-desc">Cycle through built-in canvas styles automatically</span>
+          </div>
+          <label class="toggle-switch" aria-label="Auto rotate wallpapers">
+            <input type="checkbox" id="toggle-rotate" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div id="rotate-interval-row" class="settings-row hidden">
+          <label class="settings-label" for="rotate-interval">Rotation Interval</label>
+          <select id="rotate-interval" class="settings-select">
+            <option value="30000">30 seconds</option>
+            <option value="60000">1 minute</option>
+            <option value="120000">2 minutes</option>
+            <option value="180000">3 minutes</option>
+            <option value="300000">5 minutes</option>
+            <option value="600000" selected>10 minutes</option>
+            <option value="1800000">30 minutes</option>
+            <option value="3600000">1 hour</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ── Section: Overlay Opacity ── -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a10 10 0 0 1 0 20V2z" fill="currentColor" />
+          </svg>
+          Overlay
+        </h3>
+        <label class="settings-label" for="overlay-opacity">Overlay Darkness</label>
+        <div class="slider-row">
+          <input type="range" id="overlay-opacity" min="0" max="80" value="30" />
+          <span id="overlay-opacity-val">30%</span>
+        </div>
+      </div>
+
+      <!-- ── Footer ── -->
+      <div id="settings-footer">
+        <span>LiveScape v0.2.0</span>
+        <span>•</span>
+        <a href="https://github.com" target="_blank">GitHub</a>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- Settings backdrop -->
+  <div id="settings-backdrop" class="hidden"></div>
+
+  <!-- ══════════════════════════════════════════
+       CATEGORY WALLPAPER BROWSER MODAL
+  ══════════════════════════════════════════ -->
+  <div id="category-modal" class="modal hidden" role="dialog" aria-label="Wallpaper Browser">
+    <div class="category-modal-card glass-panel">
+      <div class="category-modal-header">
+        <div>
+          <h3 id="category-modal-title">Category</h3>
+          <span id="category-modal-count" class="category-modal-count"></span>
+        </div>
+        <button id="category-modal-close" class="modal-close-btn" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <div id="category-wallpaper-grid" class="category-wallpaper-grid">
+        <!-- Wallpaper thumbnails injected here by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ADD SHORTCUT MODAL
+  ══════════════════════════════════════════ -->
+  <div id="shortcut-modal" class="modal hidden" role="dialog" aria-label="Add shortcut">
+    <div class="modal-card glass-panel">
+      <h3>Add Shortcut</h3>
+      <div class="modal-field">
+        <label for="shortcut-name">Name</label>
+        <input type="text" id="shortcut-name" placeholder="e.g. My Site" />
+      </div>
+      <div class="modal-field">
+        <label for="shortcut-url">URL</label>
+        <input type="url" id="shortcut-url" placeholder="https://example.com" />
+      </div>
+      <div class="modal-actions">
+        <button id="shortcut-cancel" class="btn-ghost">Cancel</button>
+        <button id="shortcut-save" class="btn-primary">Add Shortcut</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       WIDGET LIBRARY MODAL
+  ══════════════════════════════════════════ -->
+  <div id="widget-library-overlay" class="modal hidden" role="dialog" aria-label="Widget Library">
+    <div class="modal-card glass-panel" id="widget-library-container">
+      <div class="category-modal-header">
+        <div>
+          <h3>Widget Library</h3>
+        </div>
+        <button id="widget-library-close" class="modal-close-btn" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="widget-library-scroll">
+        <div class="widget-library-category">
+          <div class="widget-category-title">Clock Widgets</div>
+          <div class="widget-card" data-widget-type="analogClock">
+            <div class="widget-card-info">
+              <h4>Analog Clock</h4>
+              <p>Traditional wall-style clock</p>
+            </div>
+            <button class="add-widget-btn">+</button>
+          </div>
+        </div>
+
+        <div class="widget-library-category">
+          <div class="widget-category-title">Productivity</div>
+          <div class="widget-card" data-widget-type="calendar">
+            <div class="widget-card-info">
+              <h4>Calendar</h4>
+              <p>Monthly calendar view</p>
+            </div>
+            <button class="add-widget-btn">+</button>
+          </div>
+          <div class="widget-card" data-widget-type="weather">
+            <div class="widget-card-info">
+              <h4>Weather</h4>
+              <p>Current weather conditions</p>
+            </div>
+            <button class="add-widget-btn">+</button>
+          </div>
+        </div>
+
+        <div class="widget-library-category">
+          <div class="widget-category-title">Shortcuts</div>
+          <div class="widget-card" data-widget-type="shortcutFolder">
+            <div class="widget-card-info">
+              <h4>Shortcut Folder</h4>
+              <p>Group shortcuts into folders</p>
+            </div>
+            <button class="add-widget-btn">+</button>
+          </div>
+        </div>
+
+        <div class="widget-library-category">
+          <div class="widget-category-title">Media</div>
+          <div class="widget-card" data-widget-type="music">
+            <div class="widget-card-info">
+              <h4>Music Player</h4>
+              <p>Interactive media widget</p>
+            </div>
+            <button class="add-widget-btn">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="animations/particles.js" defer></script>
+  <script src="animations/canvas-bg.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+
+</html>
