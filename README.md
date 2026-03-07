@@ -223,7 +223,7 @@ You are free to **use, copy, modify, merge, publish, distribute, sublicense, and
 
 <div align="center">
 
-Made with ❤️ by [chanukyachintada06](https://github.com/chanukyachintada06)
+Made with ❤️ by [chanukya chintada](https://github.com/chanukyachintada06) & [Sreecharan Lavudiya](https://github.com/Sreecharan01)
 
 ⭐ **Star this repo if you find LiveScape useful — it means a lot!**
 
