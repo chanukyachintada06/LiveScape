@@ -7,8 +7,9 @@
 **Transform your browser's new tab into a dynamic, interactive dashboard.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-v0.3.6-blue.svg)](manifest.json)
-[![Platform](https://img.shields.io/badge/platform-Chrome-yellow.svg)](https://www.google.com/chrome/)
+[![Version](https://img.shields.io/badge/version-v0.4.03-blue.svg)](manifest.json)
+[![Platform](https://img.shields.io/badge/platform-Chrome%20%7C%20Firefox-yellow.svg)](#-installation)
+[![Security Audit](https://img.shields.io/badge/security%20audit-11%2F11%20passed-brightgreen.svg)](docs/LiveScape_Final_Security_Audit.docx)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#-contributing)
 [![Made with JS](https://img.shields.io/badge/built%20with-JavaScript%20%7C%20CSS%20%7C%20HTML-orange.svg)](#)
 
@@ -22,7 +23,7 @@
 
 It combines **live wallpapers**, **movable widgets**, **customizable shortcuts**, and a **modern glassmorphism interface** to create a visually rich and productivity-focused browsing experience. Users can personalize their dashboard with animated wallpapers, drag-and-drop widgets, shortcut folders, and useful tools like weather forecasts, calendars, clocks, and music players.
 
-LiveScape is designed to be **lightweight, flexible, and fully customizable** while maintaining smooth performance — similar to dashboard-style productivity tools, but living right inside your browser.
+LiveScape is designed to be **lightweight, flexible, and fully customizable** while maintaining smooth performance.
 
 ---
 
@@ -36,7 +37,7 @@ LiveScape is designed to be **lightweight, flexible, and fully customizable** wh
 ### 🧩 Widget System
 - **Movable and resizable** widgets — drag them anywhere on the screen
 - **Widget Library** to add, remove, and manage widgets on demand
-- Widget layout and positions persist across sessions via local storage
+- Widget positions persist across sessions via local storage
 
 ### 🕐 Analog Clock Widget
 - Classic analog clock rendered directly on the dashboard
@@ -48,7 +49,7 @@ LiveScape is designed to be **lightweight, flexible, and fully customizable** wh
 - Live weather information displayed as a draggable dashboard widget
 
 ### 🎵 Music Player Widget
-- Built-in music player widget for ambient listening while browsing
+- Built-in music player widget supporting Spotify and Apple Music embeds
 
 ### 🔗 Shortcut Management
 - Add, edit, and remove **custom website shortcuts**
@@ -57,10 +58,10 @@ LiveScape is designed to be **lightweight, flexible, and fully customizable** wh
 
 ### 📐 Snap-to-Grid Layout
 - **Snap-to-grid** system for precise widget and shortcut alignment
-- **Layout reset** option to restore default positioning instantly
+- **Layout reset** and **export / import** options
 
 ### 🎨 Glassmorphism UI
-- Modern **glassmorphism design language** throughout the entire interface
+- Modern **glassmorphism design language** throughout the interface
 - Frosted glass panels, soft shadows, and translucent overlays
 
 ### 💾 Local Storage
@@ -81,7 +82,7 @@ LiveScape is designed to be **lightweight, flexible, and fully customizable** wh
 
 ## 🚀 Installation
 
-LiveScape is not yet on the Chrome Web Store. Install it manually in just a few steps:
+LiveScape is not yet on the Chrome Web Store. Install it manually in a few steps:
 
 **1. Clone or download the repository:**
 
@@ -89,7 +90,7 @@ LiveScape is not yet on the Chrome Web Store. Install it manually in just a few 
 git clone https://github.com/chanukyachintada06/LiveScape.git
 ```
 
-Or click **Code → Download ZIP** on the [repository page](https://github.com/chanukyachintada06/LiveScape) and extract it.
+Or click **Code → Download ZIP** and extract it.
 
 **2. Open Chrome and navigate to:**
 
@@ -103,7 +104,7 @@ chrome://extensions
 
 **5. Open a new tab** — LiveScape is now live! 🎉
 
-> ⚠️ After updating source files, click the **refresh icon** on the extension card at `chrome://extensions` to reload your changes.
+> **Firefox users:** The extension includes a Gecko ID in `manifest.json` and is compatible with Firefox. Load it via `about:debugging` → "Load Temporary Add-on".
 
 ---
 
@@ -112,80 +113,97 @@ chrome://extensions
 ```
 LiveScape/
 │
-├── animations/          # Canvas & CSS animation engines for live wallpapers
+├── animations/              # Canvas & CSS animation engines for live wallpapers
 │
 ├── assets/
-│   └── icons/           # Extension icons (16px, 48px, 128px)
+│   └── icons/               # Extension icons (16px, 48px, 128px)
 │
-├── wallpapers/          # Bundled wallpaper assets (video, GIF, static images)
+├── wallpapers/              # Bundled wallpaper assets (video, GIF, static images)
 │
-├── newtab.html          # New tab page — the main UI entry point
-├── script.js            # Core JS — widgets, drag/drop, shortcuts, storage logic
-├── style.css            # Global styles — glassmorphism, layout, theming
-├── manifest.json        # Chrome Extension manifest — permissions, version, config
+├── docs/
+│   └── LiveScape_Final_Security_Audit.docx   # Full independent security audit report
 │
-├── privacy.html         # In-extension privacy policy page
-├── PRIVACY.md           # Privacy policy (Markdown format)
+├── newtab.html              # New tab page — the main UI entry point
+├── script.js                # Core JS — widgets, drag/drop, shortcuts, storage logic
+├── style.css                # Global styles — glassmorphism, layout, theming
+├── manifest.json            # Chrome Extension manifest — permissions, version, config
 │
-└── README.md            # Project documentation
+├── privacy.html             # In-extension privacy policy page
+├── PRIVACY.md               # Privacy policy (Markdown format)
+├── LICENSE                  # MIT License
+│
+└── README.md                # Project documentation
 ```
 
-### File Roles at a Glance
+---
 
-| File / Folder | Role |
-|---|---|
-| `newtab.html` | The HTML page Chrome loads on every new tab. Contains the full UI structure: wallpaper layer, widget containers, shortcut grid, and modal hooks. |
-| `script.js` | The brain of LiveScape. Handles widget drag/resize, shortcut management, wallpaper switching, snap-to-grid, and local storage persistence. |
-| `style.css` | All visual styling — glassmorphism panels, widget layouts, animation layers, and responsive rules. |
-| `manifest.json` | Chrome extension config — declares the `chrome_url_overrides` for new tab, icon paths, permissions, and current version. |
-| `animations/` | Animation scripts and definitions powering live canvas and CSS wallpaper effects. |
-| `wallpapers/` | Locally bundled wallpaper files served without any external network requests. |
+## 🔒 Security
+
+LiveScape has undergone a full independent static security audit. All critical and high-severity vulnerabilities have been resolved prior to the v0.4.03 release.
+
+### Audit Summary
+
+| Severity | Found | Resolved | Deferred |
+|----------|-------|----------|----------|
+| 🔴 HIGH | 3 | **3 / 3** | 0 |
+| 🟡 MEDIUM | 6 | **4 / 6** | 2 |
+| 🟢 LOW | 6 | **2 / 6** | 4 |
+
+**Fixes applied in v0.4.03:**
+- `javascript:` / `data:` URL scheme injection blocked in all shortcut inputs
+- `innerHTML` replaced with `textContent` for all user-controlled data
+- Music player iframes now include a full `sandbox` attribute
+- `web_accessible_resources` restricted to `chrome-extension://` only
+- CSP hardened with `connect-src` and `frame-src` directives
+- `ResizeObserver` instances properly disconnected on widget removal
+- `rel="noopener noreferrer"` added to all external links
+- Layout import now validates and sanitizes all imported URLs and numeric values
+
+📄 **Full report:** [`docs/LiveScape_Final_Security_Audit.docx`](docs/LiveScape_Final_Security_Audit.docx)
 
 ---
 
 ## 🛣️ Roadmap
 
-LiveScape is actively in development. Here's what's planned:
-
 | Status | Version | Feature |
 |--------|---------|---------|
-| 🔜 Next Up | v0.4.01 | Settings Panel |
-| 🔜 Next Up | v0.4.01 | Widget Visibility Controls |
+| 🔜 Next Up | v0.4.x | Settings Panel |
+| 🔜 Next Up | v0.4.x | Widget Visibility Controls |
+| 📋 Planned | Future | Weather widget IP geolocation consent UI |
+| 📋 Planned | Future | GIF storage migration to IndexedDB |
 | 📋 Planned | Future | Theme Presets |
-| 📋 Planned | Future | Import / Export Layout |
-| 📋 Planned | Future | Performance Optimizations |
 | 📋 Planned | Future | Chrome Web Store Release |
+| 📋 Planned | Future | Performance Optimizations |
 
 ---
 
 ## 🤝 Contributing
 
-LiveScape is fully open source and **all contributions are welcome** — bug reports, feature ideas, code, design improvements, new wallpapers, or documentation fixes.
+LiveScape is fully open source and **all contributions are welcome** — bug fixes, new features, new wallpapers, documentation improvements, or design enhancements.
 
 ### How to Contribute
 
 1. **Fork** this repository
-2. **Create a branch** for your feature or fix:
+2. **Create a branch:**
    ```bash
    git checkout -b feature/your-feature-name
    ```
-3. **Make your changes** and commit them:
+3. **Commit your changes:**
    ```bash
    git commit -m "feat: describe what you added or fixed"
    ```
-4. **Push** to your fork:
+4. **Push to your fork:**
    ```bash
    git push origin feature/your-feature-name
    ```
-5. **Open a Pull Request** — describe your changes clearly and it'll be reviewed promptly!
+5. **Open a Pull Request** — describe your changes and it'll be reviewed promptly.
 
 ### Ideas for Contributions
 - 🔧 Fix a bug or implement a roadmap feature
 - 🖼️ Submit new wallpaper or animation presets
 - 🧩 Build a new widget type
-- ♿ Improve accessibility
-- 📝 Improve documentation or add screenshots
 - 🌐 Help port LiveScape to Firefox
+- 📝 Improve documentation or add screenshots
 
 ---
 
@@ -193,11 +211,11 @@ LiveScape is fully open source and **all contributions are welcome** — bug rep
 
 LiveScape is built with privacy as a core principle:
 
-- ✅ All user data (settings, shortcuts, layouts) stored **locally** in `localStorage` / `chrome.storage`
-- ✅ **No data collected**, transmitted, or sent to any server — ever
+- ✅ All user data stored **locally** — never transmitted to any server
 - ✅ **No analytics, no telemetry, no tracking** of any kind
-- ✅ All wallpapers and assets are **bundled locally** — no external network requests at runtime
+- ✅ All assets are **bundled locally** — no external network requests at runtime
 - ✅ Only the minimum permissions declared in `manifest.json` are requested
+- ✅ Weather widget uses browser geolocation API which prompts for user permission
 
 Full policy: [`PRIVACY.md`](PRIVACY.md)
 
@@ -206,10 +224,8 @@ Full policy: [`PRIVACY.md`](PRIVACY.md)
 ## 📦 Current Version
 
 ```
-LiveScape v0.3.6
+LiveScape v0.4.03
 ```
-
-> ⚡ Settings system and widget visibility controls are arriving in **v0.4.01**
 
 ---
 
@@ -217,13 +233,13 @@ LiveScape v0.3.6
 
 This project is open source under the **[MIT License](LICENSE)**.
 
-You are free to **use, copy, modify, merge, publish, distribute, sublicense, and/or sell** copies of this software. See [`LICENSE`](LICENSE) for the full terms.
+You are free to **use, copy, modify, merge, publish, distribute, sublicense, and/or sell** copies of this software. See [`LICENSE`](LICENSE) for full terms.
 
 ---
 
 <div align="center">
 
-Made with ❤️ by [chanukya chintada](https://github.com/chanukyachintada06) & [Sreecharan Lavudiya](https://github.com/Sreecharan01)
+Made with ❤️ by [chanukyachintada06](https://github.com/chanukyachintada06)
 
 ⭐ **Star this repo if you find LiveScape useful — it means a lot!**
 
