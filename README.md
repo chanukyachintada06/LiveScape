@@ -224,7 +224,7 @@ Full policy: [`PRIVACY.md`](PRIVACY.md)
 ## 📦 Current Version
 
 ```
-LiveScape v0.4.03
+LiveScape v1.0.0
 ```
 
 ---
