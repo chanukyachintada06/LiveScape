@@ -78,6 +78,16 @@ LiveScape is designed to be **lightweight, flexible, and fully customizable** wh
 |:-:|:-:|:-:|
 | ![Dashboard](Preview-Images/preview-drashboard.png) | ![Widgets](Preview-Images/preview-widgets-library.png) | ![Wallpapers](Preview-Images/preview-wallpaper-selection.png) |
 
+## 🎥 Live Preview
+
+<div align="center">
+
+https://github.com/chanukyachintada06/LiveScape/raw/main/Preview-Images/Preview-of-live-video.mp4
+
+</div>
+
+> _Can't see the video? [Click here to watch it directly](Preview-Images/Preview-of-live-video.mp4)_
+
 ---
 
 ## 🚀 Installation
