@@ -159,7 +159,7 @@ LiveScape has undergone a full independent static security audit. All critical a
 - `rel="noopener noreferrer"` added to all external links
 - Layout import now validates and sanitizes all imported URLs and numeric values
 
-📄 **Full report:** [`docs/LiveScape_Final_Security_Audit.docx`](docs/LiveScape_Final_Security_Audit.docx)
+📄 **Full report:** [`Security Audit`](docs/LiveScape_Security_Audit.docx)
 
 ---
 
@@ -239,7 +239,7 @@ You are free to **use, copy, modify, merge, publish, distribute, sublicense, and
 
 <div align="center">
 
-Made with ❤️ by [chanukyachintada06](https://github.com/chanukyachintada06)
+Made with ❤️ by [chanukyachintada06](https://github.com/chanukyachintada06) & [Sreecharan Lavudiya](https://www.linkedin.com/in/sreecharan-lavudiya/)
 
 ⭐ **Star this repo if you find LiveScape useful — it means a lot!**
 
