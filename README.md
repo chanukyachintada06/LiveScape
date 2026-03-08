@@ -82,7 +82,7 @@ LiveScape is designed to be **lightweight, flexible, and fully customizable** wh
 
 <div align="center">
 
-https://github.com/chanukyachintada06/LiveScape/raw/main/Preview-Images/Preview-of-live-video.mp4
+https://github.com/chanukyachintada06/LiveScape/blob/main/Preview-Images/Preview-of-live-video.mp4
 
 </div>
 
