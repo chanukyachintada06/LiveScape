@@ -26,6 +26,17 @@ const STORAGE_KEYS = {
   ROTATE_INTERVAL: 'ls_rotate_interval', // ms (300000 | 600000 | 1800000 | 3600000)
   DYNAMIC_WIDGETS: 'ls_dynamic_widgets', // JSON array tracking custom dynamically spawned widgets
   WIDGET_VISIBILITY: 'ls_widget_visibility', // JSON dict mapping widget toggles
+  THEME: 'ls_theme', // string key for preset theme
+};
+
+/* ════════════════════════════════════════════════════════
+   THEME PRESETS
+   ════════════════════════════════════════════════════════ */
+const THEMES = {
+  cyberpunk: { overlay: 45, blur: 30, accent: "#00f7ff", widgetOpacity: 0.85 },
+  minimal: { overlay: 20, blur: 10, accent: "#ffffff", widgetOpacity: 0.95 },
+  glass: { overlay: 30, blur: 40, accent: "#6fb8ff", widgetOpacity: 0.9 },
+  dark: { overlay: 55, blur: 20, accent: "#4c8fff", widgetOpacity: 0.85 }
 };
 
 /* ════════════════════════════════════════════════════════
@@ -56,6 +67,7 @@ const state = {
     music: true,
     shortcutFolder: true
   },
+  theme: null,
 };
 
 /* ════════════════════════════════════════════════════════
@@ -165,9 +177,11 @@ const DOM = {
   toggleClock: $('toggle-clock'),
   toggle24h: $('toggle-24h'),
 
-  // Movable Widgets
   movableWidgets: document.querySelectorAll('.movable-widget'),
   resetLayoutBtn: $('reset-layout-btn'),
+  exportLayoutBtn: $('export-layout-btn'),
+  importLayoutBtn: $('import-layout-btn'),
+  layoutImportInput: $('layout-import'),
 
   overlayOpacity: $('overlay-opacity'),
   overlayOpacityVal: $('overlay-opacity-val'),
@@ -197,6 +211,9 @@ const DOM = {
   widgetLibraryContainer: $('widget-library-container'),
   widgetLibraryCloseBtn: $('widget-library-close'),
   widgetLayer: $('widget-layer'),
+
+  // Theme Presets
+  themeCards: document.querySelectorAll('.theme-card'),
 };
 
 /* ════════════════════════════════════════════════════════
@@ -308,6 +325,16 @@ const Store = {
 };
 
 /* ════════════════════════════════════════════════════════
+   URL SAFETY HELPER
+   ════════════════════════════════════════════════════════ */
+function isSafeUrl(url) { // SECURITY FIX: javascript:/data: scheme injection
+  try {
+    const u = new URL(url);
+    return u.protocol === 'http:' || u.protocol === 'https:';
+  } catch { return false; }
+}
+
+/* ════════════════════════════════════════════════════════
    CLOCK
    ════════════════════════════════════════════════════════ */
 function updateClock() {
@@ -406,6 +433,37 @@ function showAnimationWallpaper(style) {
 
 function applyOverlayOpacity(value) {
   DOM.overlay.style.background = `rgba(0, 0, 0, ${value / 100})`;
+}
+
+/* ════════════════════════════════════════════════════════
+   THEME MANAGEMENT
+   ════════════════════════════════════════════════════════ */
+function applyTheme(themeKey) {
+  const theme = THEMES[themeKey];
+  if (!theme) return;
+
+  state.theme = themeKey;
+  Store.set({ [STORAGE_KEYS.THEME]: themeKey });
+
+  // Update overlay
+  state.overlayOpacity = theme.overlay;
+  DOM.overlayOpacity.value = theme.overlay;
+  DOM.overlayOpacityVal.textContent = theme.overlay + '%';
+  applyOverlayOpacity(theme.overlay);
+  Store.set({ [STORAGE_KEYS.OVERLAY_OPACITY]: theme.overlay });
+
+  // Apply CSS variables dynamically to body
+  DOM.body.style.setProperty('--blur-md', theme.blur + 'px');
+  DOM.body.style.setProperty('--color-primary', theme.accent);
+  DOM.body.style.setProperty('--widget-opacity', theme.widgetOpacity);
+
+  // Update widget styling immediately if they use widgetOpacity variable
+  // For widgets, we rely on CSS var --widget-opacity which we will add in style.css
+
+  // Visual feedback: highlight active theme card
+  DOM.themeCards.forEach(card => {
+    card.classList.toggle('active', card.dataset.theme === themeKey);
+  });
 }
 
 /* ════════════════════════════════════════════════════════
@@ -565,6 +623,132 @@ function updateUploadUI(type) {
 }
 
 /* ════════════════════════════════════════════════════════
+   LAYOUT EXPORT / IMPORT
+   ════════════════════════════════════════════════════════ */
+async function exportLayout() {
+  const allData = await Store.get(Object.values(STORAGE_KEYS));
+  const dynamicWidgetsStr = allData[STORAGE_KEYS.DYNAMIC_WIDGETS] || '[]';
+  const shortcutsStr = allData[STORAGE_KEYS.SHORTCUTS] || '[]';
+  const positionsStr = allData[STORAGE_KEYS.WIDGET_POSITIONS] || '{}';
+  const visibilityVal = allData[STORAGE_KEYS.WIDGET_VISIBILITY] || '{}';
+
+  const layout = {
+    version: "1.0.0",
+    widgets: {
+      dynamic: JSON.parse(typeof dynamicWidgetsStr === 'string' ? dynamicWidgetsStr : '[]'),
+      positions: JSON.parse(typeof positionsStr === 'string' ? positionsStr : '{}')
+    },
+    shortcuts: JSON.parse(typeof shortcutsStr === 'string' ? shortcutsStr : '[]'),
+    widgetFolders: [], // Placeholder if we expand folders
+    settings: {
+      mode: allData[STORAGE_KEYS.MODE],
+      wallpaperType: allData[STORAGE_KEYS.WALLPAPER_TYPE],
+      animationStyle: allData[STORAGE_KEYS.ANIMATION_STYLE],
+      perfPause: allData[STORAGE_KEYS.PERF_PAUSE],
+      reduceParticles: allData[STORAGE_KEYS.REDUCE_PARTICLES],
+      showClock: allData[STORAGE_KEYS.SHOW_CLOCK],
+      clock24h: allData[STORAGE_KEYS.CLOCK_24H],
+      overlayOpacity: allData[STORAGE_KEYS.OVERLAY_OPACITY],
+      autoRotate: allData[STORAGE_KEYS.AUTO_ROTATE],
+      rotateInterval: allData[STORAGE_KEYS.ROTATE_INTERVAL],
+      theme: allData[STORAGE_KEYS.THEME]
+    },
+    widgetVisibility: typeof visibilityVal === 'string' ? JSON.parse(visibilityVal) : visibilityVal
+  };
+
+  const json = JSON.stringify(layout, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'livescape-layout.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showToast('Layout exported successfully', 'success');
+}
+
+function importLayout(file) {
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      const layout = JSON.parse(e.target.result);
+      if (!layout.version || (!layout.settings && !layout.widgets)) {
+        showToast('Invalid layout file', 'error');
+        return;
+      }
+
+      if (confirm('Importing a layout will overwrite your current dashboard.\nContinue?')) {
+        if (layout.version !== "1.0.0") {
+          console.warn(`Importing layout from different version (File: ${layout.version}, Current: 1.0.0)`);
+        }
+
+        if (Array.isArray(layout.shortcuts)) {
+          layout.shortcuts = layout.shortcuts.filter(sc =>
+            typeof sc.name === 'string' &&
+            typeof sc.url === 'string' &&
+            isSafeUrl(sc.url)
+          );
+        } // SECURITY FIX: unsafe URLs in imported layout
+
+        if (layout.settings?.overlayOpacity !== undefined) {
+          layout.settings.overlayOpacity = Math.max(0, Math.min(80,
+            Number(layout.settings.overlayOpacity) || 30));
+        } // SECURITY FIX: Infinity/NaN in imported numeric values
+
+        const updates = {};
+        if (layout.widgets) {
+          if (layout.widgets.dynamic) updates[STORAGE_KEYS.DYNAMIC_WIDGETS] = JSON.stringify(layout.widgets.dynamic);
+          if (layout.widgets.positions) updates[STORAGE_KEYS.WIDGET_POSITIONS] = JSON.stringify(layout.widgets.positions);
+        }
+        if (layout.shortcuts) {
+          updates[STORAGE_KEYS.SHORTCUTS] = JSON.stringify(layout.shortcuts);
+        }
+        if (layout.widgetVisibility) {
+          updates[STORAGE_KEYS.WIDGET_VISIBILITY] = JSON.stringify(layout.widgetVisibility);
+        }
+        if (layout.settings) {
+          if (layout.settings.mode !== undefined) updates[STORAGE_KEYS.MODE] = layout.settings.mode;
+
+          const mapping = {
+            wallpaperType: STORAGE_KEYS.WALLPAPER_TYPE,
+            animationStyle: STORAGE_KEYS.ANIMATION_STYLE,
+            perfPause: STORAGE_KEYS.PERF_PAUSE,
+            reduceParticles: STORAGE_KEYS.REDUCE_PARTICLES,
+            showClock: STORAGE_KEYS.SHOW_CLOCK,
+            clock24h: STORAGE_KEYS.CLOCK_24H,
+            overlayOpacity: STORAGE_KEYS.OVERLAY_OPACITY,
+            autoRotate: STORAGE_KEYS.AUTO_ROTATE,
+            rotateInterval: STORAGE_KEYS.ROTATE_INTERVAL,
+            theme: STORAGE_KEYS.THEME
+          };
+          for (const [k, key] of Object.entries(mapping)) {
+            if (layout.settings[k] !== undefined) updates[key] = layout.settings[k];
+          }
+        }
+
+        await Store.set(updates);
+        showToast('Layout imported successfully', 'success');
+
+        // Reload to apply
+        setTimeout(() => location.reload(), 1000);
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('Invalid layout file', 'error');
+    }
+  };
+  reader.readAsText(file);
+  // Reset input
+  if (DOM.layoutImportInput) DOM.layoutImportInput.value = '';
+}
+
+/* ════════════════════════════════════════════════════════
    PAGE VISIBILITY (PERFORMANCE)
    ════════════════════════════════════════════════════════ */
 document.addEventListener('visibilitychange', () => {
@@ -611,14 +795,18 @@ function renderShortcuts(shortcuts) {
     }
     const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 
+    // Build element with safe static HTML first, then patch name fields
     el.innerHTML = `
       <div class="shortcut-icon" style="position: relative;">
-        <img src="${faviconUrl}" class="shortcut-icon-img" alt="${sc.name}" />
-        <span class="fallback-icon" style="display:none;font-size:1.2rem;font-weight:700;color:var(--color-primary)">${(sc.name || '?')[0].toUpperCase()}</span>
+        <img src="${faviconUrl}" class="shortcut-icon-img" alt="" />
+        <span class="fallback-icon" style="display:none;font-size:1.2rem;font-weight:700;color:var(--color-primary)"></span>
         <div class="delete-shortcut-btn" title="Delete Shortcut" data-index="${index}">×</div>
       </div>
-      <span class="shortcut-label">${sc.name}</span>
+      <span class="shortcut-label"></span>
     `;
+    el.querySelector('.fallback-icon').textContent = (sc.name || '?')[0].toUpperCase();
+    el.querySelector('.shortcut-label').textContent = sc.name;
+    // SECURITY FIX: XSS via sc.name in innerHTML
 
     // Strict CSP-compliant error handler for icon loading fallback
     const imgEl = el.querySelector('.shortcut-icon-img');
@@ -754,8 +942,8 @@ const DEFAULT_SHORTCUTS = [
   { name: "YouTube", url: "https://youtube.com" },
   { name: "Twitter", url: "https://twitter.com" },
   { name: "Instagram", url: "https://instagram.com" },
-  { name: "Developer 1", url: "https://chanukya.xyz" },
-  { name: "Developer 2", url: "https://chanukya.xyz" }
+  { name: "Developer 1", url: "https://chanukyachintada.vercel.app" },
+  { name: "Developer 2", url: "https://linkedin.com/in/sreecharan-lavudiya/" }
 ];
 
 async function loadShortcuts() {
@@ -770,6 +958,24 @@ async function loadShortcuts() {
 
   try {
     _customShortcuts = JSON.parse(data[STORAGE_KEYS.SHORTCUTS]);
+
+    // Migrate old developer URLs to the new working links
+    let updated = false;
+    _customShortcuts.forEach(sc => {
+      if (sc.name === "Developer 1" && (sc.url === "https://chanukya.xyz" || sc.url === "https://yourwebsite.com")) {
+        sc.url = "https://chanukyachintada.vercel.app";
+        updated = true;
+      }
+      if (sc.name === "Developer 2" && (sc.url === "https://chanukya.xyz" || sc.url === "https://yourwebsite.com")) {
+        sc.url = "https://linkedin.com/in/sreecharan-lavudiya/";
+        updated = true;
+      }
+    });
+
+    if (updated) {
+      await Store.set({ [STORAGE_KEYS.SHORTCUTS]: JSON.stringify(_customShortcuts) });
+    }
+
   } catch {
     _customShortcuts = [...DEFAULT_SHORTCUTS];
   }
@@ -907,10 +1113,12 @@ async function openCategoryModal(category) {
       const imgSrc = chrome.runtime.getURL(`wallpapers/${wp.folder}/${wp.file}`);
 
       thumb.innerHTML = `
-        <img src="${imgSrc}" alt="${wp.name}" loading="lazy" />
-        <div class="wallpaper-thumb-label">${wp.name}</div>
+        <img src="${imgSrc}" alt="" loading="lazy" />
+        <div class="wallpaper-thumb-label"></div>
         <div class="wallpaper-thumb-active-badge">✓ Active</div>
       `;
+      thumb.querySelector('.wallpaper-thumb-label').textContent = wp.name;
+      // SECURITY FIX: XSS via wp.name in wallpaper thumbnail innerHTML
 
       thumb.addEventListener('click', () => {
         applyCategoryWallpaper(wp, imgSrc);
@@ -1310,6 +1518,7 @@ async function init() {
     [STORAGE_KEYS.ROTATE_INTERVAL]: 600000,
     [STORAGE_KEYS.DYNAMIC_WIDGETS]: '[]',
     [STORAGE_KEYS.WIDGET_VISIBILITY]: null,
+    [STORAGE_KEYS.THEME]: null,
   });
 
   // Apply state
@@ -1326,6 +1535,7 @@ async function init() {
   if (wv) {
     state.widgetVisibility = (typeof wv === 'string') ? JSON.parse(wv) : wv;
   }
+  state.theme = data[STORAGE_KEYS.THEME];
 
   // ── Apply display mode ──
   DOM.body.classList.toggle('mode-blur', state.displayMode === 'blur');
@@ -1439,6 +1649,11 @@ async function init() {
   state.dynamicWidgets.forEach(w => {
     restoreDynamicWidget(w, true);
   });
+
+  // ── Apply theme if set ──
+  if (state.theme && THEMES[state.theme]) {
+    applyTheme(state.theme);
+  }
 
   // ── Load shortcuts ──
   await loadShortcuts();
@@ -1580,6 +1795,30 @@ function bindEvents() {
       handleCategory(btn.dataset.category);
     });
   });
+
+  /* Theme cards */
+  DOM.themeCards.forEach(card => {
+    card.addEventListener('click', () => {
+      applyTheme(card.dataset.theme);
+    });
+  });
+
+  /* Layout Export / Import */
+  if (DOM.exportLayoutBtn) {
+    DOM.exportLayoutBtn.addEventListener('click', exportLayout);
+  }
+  if (DOM.importLayoutBtn) {
+    DOM.importLayoutBtn.addEventListener('click', () => {
+      DOM.layoutImportInput.click();
+    });
+  }
+  if (DOM.layoutImportInput) {
+    DOM.layoutImportInput.addEventListener('change', e => {
+      if (e.target.files.length > 0) {
+        importLayout(e.target.files[0]);
+      }
+    });
+  }
 
   /* Performance toggles */
   DOM.togglePerf.addEventListener('change', () => {
@@ -1767,6 +2006,7 @@ function restoreDynamicWidget(w, isInitPhase = false) {
   el.className = 'movable-widget custom-widget'; // Tag clearly separating structural custom ones
 
   const innerEl = config.create(w);
+  el.resizeObserver = innerEl.resizeObserver || null; // SECURITY FIX: propagate observer reference from innerEl to outer el for cleanup
   el.appendChild(innerEl);
 
   const handle = document.createElement('div');
@@ -1781,6 +2021,9 @@ function restoreDynamicWidget(w, isInitPhase = false) {
     removeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       e.preventDefault();
+      if (el.resizeObserver) {
+        el.resizeObserver.disconnect();
+      } // SECURITY FIX: ResizeObserver memory leak on widget removal
       if (el.cleanup) el.cleanup();
       if (innerEl.cleanup) innerEl.cleanup();
       removeDynamicWidget(w.id);
@@ -1923,6 +2166,8 @@ function createAnalogClockWidget() {
   });
 
   resizeObserver.observe(el);
+  el.resizeObserver = resizeObserver;
+  // SECURITY FIX: expose observer for cleanup on removal
 
   return el;
 }
@@ -2040,6 +2285,8 @@ function createCalendarWidget() {
     }
   });
   ro.observe(el);
+  el.resizeObserver = ro;
+  // SECURITY FIX: expose observer for cleanup on removal
 
   return el;
 }
@@ -2176,6 +2423,8 @@ function createWeatherWidget() {
     }
   });
   ro.observe(el);
+  el.resizeObserver = ro;
+  // SECURITY FIX: expose observer for cleanup on removal
 
   return el;
 }
@@ -2310,6 +2559,10 @@ function createShortcutFolderWidget(w) {
         if (!url.startsWith('http://') && !url.startsWith('https://')) {
           url = 'https://' + url;
         }
+        if (!isSafeUrl(url)) {
+          alert('Invalid URL. Only http and https are allowed.');
+          return;
+        } // SECURITY FIX: javascript:/data: scheme injection in folder prompt
 
         items.push({ name, url });
         saveItems();
@@ -2433,6 +2686,8 @@ function createMusicWidget(w) {
       iframe.height = "100%";
       iframe.frameBorder = "0";
       iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+      iframe.sandbox = "allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox";
+      // SECURITY FIX: music iframes missing sandbox attribute
       iframe.loading = "lazy";
       playerContainer.appendChild(iframe);
     } else {
@@ -2482,6 +2737,8 @@ function createMusicWidget(w) {
     if (el.offsetHeight < 200) el.style.minHeight = '200px';
   });
   ro.observe(el);
+  el.resizeObserver = ro;
+  // SECURITY FIX: expose observer for cleanup on removal
 
   renderSelector();
   renderPlayer();
@@ -2506,6 +2763,10 @@ async function saveShortcut() {
   }
 
   if (!url.startsWith('http')) url = 'https://' + url;
+  if (!isSafeUrl(url)) {
+    showToast('Invalid URL. Only http and https are allowed.', 'error');
+    return;
+  } // SECURITY FIX: javascript:/data: scheme injection
 
   if (_editingShortcutIndex !== -1) {
     // Edit existing shortcut

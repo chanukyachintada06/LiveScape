@@ -116,21 +116,24 @@
       </div>
 
       <!-- Center Section -->
-      <a id="footer-center-link" href="https://yourwebsite.com" target="_blank">
-        LiveScape v0.3.6 • Dynamic Wallpapers
+      <a id="footer-center-link" href="https://yourwebsite.com" target="_blank" rel="noopener noreferrer">
+        <!-- SECURITY FIX: missing noopener noreferrer on _blank links -->
+        LiveScape v1.0.0 • Dynamic Wallpapers
       </a>
 
       <!-- Right Section (Socials) -->
       <div id="footer-socials">
         <!-- Button 1: GitHub -->
-        <a href="https://github.com" target="_blank" class="footer-icon-btn" aria-label="GitHub">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="footer-icon-btn"
+          aria-label="GitHub"> <!-- SECURITY FIX: missing noopener noreferrer on _blank links -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path
               d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
           </svg>
         </a>
         <!-- Button 2: Developer 1 -->
-        <a href="#" target="_blank" class="footer-icon-btn" aria-label="Developer 1 Portfolio">
+        <a href="#" target="_blank" rel="noopener noreferrer" class="footer-icon-btn"
+          aria-label="Developer 1 Portfolio"> <!-- SECURITY FIX: missing noopener noreferrer on _blank links -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <circle cx="12" cy="12" r="10" />
             <path
@@ -138,7 +141,8 @@
           </svg>
         </a>
         <!-- Button 3: Developer 2 -->
-        <a href="#" target="_blank" class="footer-icon-btn" aria-label="Developer 2 Portfolio">
+        <a href="#" target="_blank" rel="noopener noreferrer" class="footer-icon-btn"
+          aria-label="Developer 2 Portfolio"> <!-- SECURITY FIX: missing noopener noreferrer on _blank links -->
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <circle cx="12" cy="12" r="10" />
             <path
@@ -215,8 +219,32 @@
           </button>
         </div>
 
-        <button id="reset-layout-btn" class="danger-btn" style="margin-top: 1rem; width: 100%;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <button id="export-layout-btn" class="btn-ghost"
+          style="margin-top: 1rem; width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            style="width: 18px; height: 18px;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Export Layout
+        </button>
+        <button id="import-layout-btn" class="btn-ghost"
+          style="margin-top: 0.6rem; width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            style="width: 18px; height: 18px;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          Import Layout
+        </button>
+        <input type="file" id="layout-import" accept=".json" class="hidden-input" />
+
+        <button id="reset-layout-btn" class="danger-btn"
+          style="margin-top: 0.6rem; width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            style="width: 18px; height: 18px;">
             <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
             <path d="M3 3v5h5" />
           </svg>
@@ -517,6 +545,30 @@
         </div>
       </div>
 
+      <!-- ── Section: Themes ── -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
+          Themes
+        </h3>
+        <div class="category-grid" id="theme-presets-grid">
+          <div class="theme-card" data-theme="cyberpunk">
+            <span>Cyberpunk</span>
+          </div>
+          <div class="theme-card" data-theme="minimal">
+            <span>Minimal</span>
+          </div>
+          <div class="theme-card" data-theme="glass">
+            <span>Glass</span>
+          </div>
+          <div class="theme-card" data-theme="dark">
+            <span>Dark</span>
+          </div>
+        </div>
+      </div>
+
       <!-- ── Section: Overlay Opacity ── -->
       <div class="settings-section">
         <h3 class="settings-section-title">
@@ -535,9 +587,19 @@
 
       <!-- ── Footer ── -->
       <div id="settings-footer">
-        <span>LiveScape v0.2.0</span>
+        <span>LiveScape v1.0.0</span>
         <span>•</span>
-        <a href="https://github.com" target="_blank">GitHub</a>
+        <a href="https://github.com/chanukyachintada06/LiveScape" target="_blank" rel="noopener noreferrer"
+          title="GitHub">GitHub</a> <!-- SECURITY FIX: missing noopener noreferrer on _blank links -->
+        <span>•</span>
+        <a href="https://chanukyachintada.vercel.app" target="_blank" rel="noopener noreferrer" title="Developer 1">Dev
+          1</a> <!-- SECURITY FIX: missing noopener noreferrer on _blank links -->
+        <span>•</span>
+        <a href="https://www.linkedin.com/in/sreecharan-lavudiya/" target="_blank" rel="noopener noreferrer"
+          title="Developer 2">Dev 2</a> <!-- SECURITY FIX: missing noopener noreferrer on _blank links -->
+        <span>•</span>
+        <a href="privacy.html" target="_blank" rel="noopener noreferrer" title="Privacy Policy">Privacy</a>
+        <!-- SECURITY FIX: missing noopener noreferrer on _blank links -->
       </div>
 
     </div>
