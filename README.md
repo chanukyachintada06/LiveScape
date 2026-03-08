@@ -76,7 +76,7 @@ LiveScape is designed to be **lightweight, flexible, and fully customizable** wh
 
 | Dashboard | Widgets | Wallpaper Selection |
 |:-:|:-:|:-:|
-| ![Dashboard](assets/screenshots/dashboard.png) | ![Widgets](assets/screenshots/widgets.png) | ![Wallpapers](assets/screenshots/wallpapers.png) |
+| ![Dashboard](Preview Images/preview drashboard.png) | ![Widgets](Preview Images/preview widgets library.png) | ![Wallpapers](Preview Images/preview wallpaper selection.png) |
 
 ---
 
