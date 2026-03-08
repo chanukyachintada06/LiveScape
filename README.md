@@ -81,9 +81,7 @@ LiveScape is designed to be **lightweight, flexible, and fully customizable** wh
 ## 🎥 Live Preview
 
 <div align="center">
-
-https://github.com/chanukyachintada06/LiveScape/blob/main/Preview-Images/Preview-of-live-video.mp4
-
+   <video src="Preview-Images/Preview-of-live-video.mp4" controls width="100%"></video>
 </div>
 
 > _Can't see the video? [Click here to watch it directly](Preview-Images/Preview-of-live-video.mp4)_
